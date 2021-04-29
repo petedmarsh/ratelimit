@@ -9,7 +9,7 @@ import (
 	"strconv"
 	"testing"
 
-	"github.com/bradfitz/gomemcache/memcache"
+	"github.com/rainycape/memcache"
 	"github.com/coocood/freecache"
 
 	pb "github.com/envoyproxy/go-control-plane/envoy/service/ratelimit/v3"
