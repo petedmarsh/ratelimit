@@ -1,7 +1,7 @@
 package memcached
 
 import (
-	"github.com/bradfitz/gomemcache/memcache"
+	"github.com/rainycape/memcache"
 )
 
 var _ Client = (*memcache.Client)(nil)

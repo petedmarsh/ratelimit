@@ -5,7 +5,7 @@
 package mock_memcached
 
 import (
-	memcache "github.com/bradfitz/gomemcache/memcache"
+	memcache "github.com/rainycape/memcache"
 	gomock "github.com/golang/mock/gomock"
 	reflect "reflect"
 )
