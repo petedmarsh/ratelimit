@@ -25,7 +25,7 @@ import (
 	"github.com/coocood/freecache"
 	stats "github.com/lyft/gostats"
 
-	"github.com/rainycape/memcache"
+	"github.com/bradfitz/gomemcache/memcache"
 
 	logger "github.com/sirupsen/logrus"
 
@@ -218,8 +218,8 @@ func NewRateLimitCacheImpl(client Client, timeSource utils.TimeSource, jitterRan
 
 func NewRateLimitCacheImplFromSettings(s settings.Settings, timeSource utils.TimeSource, jitterRand *rand.Rand,
 	localCache *freecache.Cache, scope stats.Scope) limiter.RateLimitCache {
-	var client, _ = memcache.New(s.MemcacheHostPort...)
-	client.SetMaxIdleConnsPerAddr(s.MemcacheMaxIdleConns)
+	var client = memcache.New(s.MemcacheHostPort...)
+	client.MaxIdleConns = s.MemcacheMaxIdleConns
 	return NewRateLimitCacheImpl(
 		CollectStats(client, scope.Scope("memcache")),
 		timeSource,

@@ -4,7 +4,7 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/rainycape/memcache"
+	"github.com/bradfitz/gomemcache/memcache"
 	"github.com/envoyproxy/ratelimit/src/memcached"
 	mock_memcached "github.com/envoyproxy/ratelimit/test/mocks/memcached"
 	"github.com/golang/mock/gomock"

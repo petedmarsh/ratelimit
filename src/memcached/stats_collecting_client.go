@@ -1,7 +1,7 @@
 package memcached
 
 import (
-	"github.com/rainycape/memcache"
+	"github.com/bradfitz/gomemcache/memcache"
 	stats "github.com/lyft/gostats"
 )
 
