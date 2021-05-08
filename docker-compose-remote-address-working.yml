@@ -9,22 +9,6 @@ services:
     networks:
       - ratelimit-network
 
-  statsd:
-    image: prom/statsd-exporter:v0.18.0
-    entrypoint: /bin/statsd_exporter
-    command:
-      - "--statsd.mapping-config=/etc/statsd-exporter/conf.yaml"
-    expose:
-      - 9125
-      - 9102
-    ports:
-      - 9125:9125
-      - 9102:9102 # Visit http://localhost:9102/metrics to see metrics in Prometheus format
-    networks:
-      - ratelimit-network
-    volumes:
-      - ./examples/prom-statsd-exporter/conf.yaml:/etc/statsd-exporter/conf.yaml
-
   ratelimit:
     image: envoyproxy/ratelimit:master
     command: /bin/ratelimit
@@ -34,14 +18,12 @@ services:
       - 6070:6070
     depends_on:
       - redis
-      - statsd
     networks:
       - ratelimit-network
     volumes:
-      - ./examples/ratelimit/config:/data/ratelimit/config
+      - ./examples/ratelimit/conf:/data/ratelimit/config
     environment:
-      - USE_STATSD=true
-      - STATSD_HOST=statsd
+      - USE_STATSD=false
       - STATSD_PORT=9125
       - LOG_LEVEL=debug
       - REDIS_SOCKET_TYPE=tcp
@@ -59,14 +41,16 @@ services:
       - "--config-path /etc/envoy/envoy.yaml"
       - "--concurrency 1"
       - "--mode serve"
-      - "--log-level info"
+      - "--log-level debug"
     volumes:
-      - ./examples/envoy/proxy.yaml:/etc/envoy/envoy.yaml
+      - ./examples/envoy/proxy-without-use_remote_address.yaml:/etc/envoy/envoy.yaml
     networks:
       - ratelimit-network
     expose:
        - "8888"
        - "8001"
+    depends_on:
+      - ratelimit
     ports:
        - "8888:8888"
        - "8001:8001"

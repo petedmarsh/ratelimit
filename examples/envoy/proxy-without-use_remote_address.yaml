@@ -75,33 +75,4 @@ static_resources:
                             cluster: mock
                             rate_limits:
                               - actions:
-                                  - source_cluster: {} # This action's value is populated by the "service-cluster" arg passed in when starting Envoy. In this example, it's "proxy" (see docker-compose-example.yml)
-                                  - destination_cluster: {} # This action's value is populated by the value set in the above egress "cluster" field -- "mock"
-                        - match:
-                            prefix: /header
-                          route:
-                            cluster: mock
-                            rate_limits:
-                              - actions:
-                                  - request_headers:
-                                      header_name: "foo"
-                                      descriptor_key: "foo"
-                        - match:
-                            prefix: /twoheader
-                          route:
-                            cluster: mock
-                            rate_limits:
-                              - actions:
-                                  - request_headers:
-                                      header_name: "foo"
-                                      descriptor_key: "foo"
-                                  - request_headers:
-                                      header_name: "bar"
-                                      descriptor_key: "bar"
-                              - actions:
-                                  - request_headers:
-                                      header_name: "foo"
-                                      descriptor_key: "foo"
-                                  - request_headers:
-                                      header_name: "baz"
-                                      descriptor_key: "baz"
+                                  - remote_address: {}
