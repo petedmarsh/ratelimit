@@ -244,6 +244,14 @@ func newServer(s settings.Settings, name string, store stats.Store, localCache *
 			pprof.Profile(writer, request)
 		})
 
+	// setup cpu trace endpoint
+	ret.AddDebugHttpEndpoint(
+		"/debug/pprof/trace",
+		"trace endpoint",
+		func(writer http.ResponseWriter, request *http.Request) {
+			pprof.Trace(writer, request)
+		})
+
 	// setup stats endpoint
 	ret.AddDebugHttpEndpoint(
 		"/stats",
