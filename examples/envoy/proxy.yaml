@@ -60,6 +60,9 @@ static_resources:
                         grpc_service:
                           envoy_grpc:
                             cluster_name: ratelimit
+                          initial_metadata:
+                            - key: my-lovely-key
+                              value: "%ROUTE_NAME%"
                         transport_api_version: V3
                   - name: envoy.filters.http.router
                     typed_config: {}
@@ -70,7 +73,8 @@ static_resources:
                       domains:
                         - "*"
                       routes:
-                        - match:
+                        - name: abc
+                          match:
                             prefix: /test
                           route:
                             cluster: mock
@@ -78,7 +82,8 @@ static_resources:
                               - actions:
                                   - source_cluster: {} # This action's value is populated by the "service-cluster" arg passed in when starting Envoy. In this example, it's "proxy" (see docker-compose-example.yml)
                                   - destination_cluster: {} # This action's value is populated by the value set in the above egress "cluster" field -- "mock"
-                        - match:
+                        - name: def
+                          match:
                             prefix: /header
                           route:
                             cluster: mock
@@ -87,7 +92,8 @@ static_resources:
                                   - request_headers:
                                       header_name: "foo"
                                       descriptor_key: "foo"
-                        - match:
+                        - name: ghi
+                          match:
                             prefix: /twoheader
                           route:
                             cluster: mock
